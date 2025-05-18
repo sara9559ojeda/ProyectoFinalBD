@@ -72,10 +72,11 @@ public class ClaimController {
         }
         return response;
     }
+
     @GetMapping("/productos-top")
     public List<Map<String, Object>> productosConMasReclamos() {
         List<Object[]> resultados = claimRepository.findProductsWithMostClaims();
-        
+
         List<Map<String, Object>> respuesta = new ArrayList<>();
         for (Object[] fila : resultados) {
             Map<String, Object> map = new HashMap<>();
@@ -85,6 +86,14 @@ public class ClaimController {
         }
         return respuesta;
     }
-    
-   
+
+    @GetMapping("/resolved-in-less-than-7-days")
+    public ResponseEntity<List<Claim>> getClaimsResolvedInLessThan7Days() {
+        List<Claim> claims = claimRepository.findClaimsResolvedUnderSevenDays();
+        if (claims.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(claims);
+    }
+
 }

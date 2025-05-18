@@ -1,13 +1,14 @@
 package com.fnal.proyectofinal.controller;
 
 import com.fnal.proyectofinal.entity.Support;
-
+import com.fnal.proyectofinal.repository.SupportRepository;
 import com.fnal.proyectofinal.service.SupportService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -15,10 +16,12 @@ import java.util.List;
 public class SupportController {
 
     private final SupportService supportService;
+    private final SupportRepository supportRepository;
    
 
-    public SupportController(SupportService supportService) {
+    public SupportController(SupportService supportService, SupportRepository supportRepository) {
         this.supportService = supportService;
+        this.supportRepository = supportRepository;
        
     }
 
@@ -56,4 +59,11 @@ public class SupportController {
         return ResponseEntity.notFound().build();
     }
     
+
+
+   @GetMapping("/avg-resolution-time")
+public ResponseEntity<Double> getGlobalAverageResolutionTime() {
+    Double avgDays = supportRepository.findAverageResolutionTimePerTechnician();
+    return ResponseEntity.ok(avgDays);
+}
 }

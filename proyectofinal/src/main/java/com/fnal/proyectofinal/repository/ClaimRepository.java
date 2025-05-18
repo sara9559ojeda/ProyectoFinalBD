@@ -32,13 +32,13 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
       """)
   List<Object[]> findProductsWithMostClaims();
 
- /* @Query(value = """
-      SELECT DISTINCT r.*
-      FROM reclamos r
-      JOIN soportes s ON r.id_reclamo = s.id_reclamo
-      WHERE s.fecha_inicio IS NOT NULL
-        AND s.fecha_fin    IS NOT NULL
-        AND DATEDIFF(s.fecha_fin, s.fecha_inicio) < 7
-      """, nativeQuery = true)
-  List<Claim> findClaimsResolvedInLessThan7Days();  */
+  @Query("""
+          SELECT r
+          FROM Claim r
+          JOIN r.supportActions s
+          WHERE s.startDate IS NOT NULL AND s.endDate IS NOT NULL
+          AND DATEDIFF(s.endDate, s.startDate) < 7
+      """)
+  List<Claim> findClaimsResolvedUnderSevenDays();
+
 }
