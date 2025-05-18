@@ -3,6 +3,8 @@ package com.fnal.proyectofinal.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,6 +25,7 @@ public class Claim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_reclamo")
+    
     private Long claimId;
 
     @ManyToOne
@@ -43,5 +46,6 @@ public class Claim {
     private String status;
 
     @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Support> supportActions;
 }

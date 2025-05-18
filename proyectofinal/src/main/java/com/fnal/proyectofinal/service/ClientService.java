@@ -32,7 +32,7 @@ public class ClientService {
         clientRepository.deleteById(id);
     }
 
-    public List<Object[]> getTopClientsWithMostClaimsLast6Months() {
+    /*public List<Object[]> getTopClientsWithMostClaimsLast6Months() {
         return clientRepository.findTopClientsWithMostClaimsLast6Months();
-    }
+    }*/
 }

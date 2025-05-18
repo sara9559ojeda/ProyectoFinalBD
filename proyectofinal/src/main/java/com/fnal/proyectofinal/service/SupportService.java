@@ -31,7 +31,5 @@ public class SupportService {
     public void deleteById(Long id) {
         supportRepository.deleteById(id);
     }
-    public List<Object[]> getAverageResolutionTimeByTechnician() {
-        return supportRepository.findAverageResolutionTimeByTechnician();
-    }
+
 }

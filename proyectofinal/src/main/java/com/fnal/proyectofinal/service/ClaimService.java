@@ -33,8 +33,4 @@ public class ClaimService {
         claimRepository.deleteById(id);
     }
 
-    // Consulta avanzada
-    public List<Claim> getClaimsResolvedInLessThan7Days() {
-        return claimRepository.findClaimsResolvedInLessThan7Days();
-    }
 }

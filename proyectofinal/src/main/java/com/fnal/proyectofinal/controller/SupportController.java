@@ -1,20 +1,25 @@
 package com.fnal.proyectofinal.controller;
 
 import com.fnal.proyectofinal.entity.Support;
+
 import com.fnal.proyectofinal.service.SupportService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/soportes")
 public class SupportController {
 
     private final SupportService supportService;
+   
 
     public SupportController(SupportService supportService) {
         this.supportService = supportService;
+       
     }
 
     @GetMapping
@@ -50,4 +55,5 @@ public class SupportController {
         }
         return ResponseEntity.notFound().build();
     }
+    
 }

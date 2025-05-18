@@ -1,20 +1,27 @@
 package com.fnal.proyectofinal.controller;
 
 import com.fnal.proyectofinal.entity.Claim;
+import com.fnal.proyectofinal.repository.ClaimRepository;
 import com.fnal.proyectofinal.service.ClaimService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reclamos")
 public class ClaimController {
 
     private final ClaimService claimService;
+    private final ClaimRepository claimRepository;
 
-    public ClaimController(ClaimService claimService) {
+    public ClaimController(ClaimService claimService, ClaimRepository claimRepository) {
         this.claimService = claimService;
+        this.claimRepository = claimRepository;
     }
 
     @GetMapping
@@ -50,4 +57,34 @@ public class ClaimController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/clientes-top")
+    public List<Map<String, Object>> getClientesTop() {
+        LocalDate fechaLimite = LocalDate.now().minusMonths(6);
+        List<Object[]> resultados = claimRepository.findTopClientsWithMostClaimsInLastSemester(fechaLimite);
+
+        List<Map<String, Object>> response = new ArrayList<>();
+        for (Object[] fila : resultados) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("cliente", fila[0]);
+            map.put("totalReclamos", fila[1]);
+            response.add(map);
+        }
+        return response;
+    }
+    @GetMapping("/productos-top")
+    public List<Map<String, Object>> productosConMasReclamos() {
+        List<Object[]> resultados = claimRepository.findProductsWithMostClaims();
+        
+        List<Map<String, Object>> respuesta = new ArrayList<>();
+        for (Object[] fila : resultados) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("nombreProducto", fila[0]);
+            map.put("totalReclamos", fila[1]);
+            respuesta.add(map);
+        }
+        return respuesta;
+    }
+    
+   
 }

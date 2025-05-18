@@ -2,6 +2,8 @@ package com.fnal.proyectofinal.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,6 +42,7 @@ public class Support {
 
     @ManyToOne
     @JoinColumn(name = "id_tecnico")
+    @JsonIgnore
     private Technician technician;
 
 }
