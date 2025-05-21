@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Clientes</title>
+    <link rel="stylesheet" href="css/clientes.css">
+</head>
+<body>
+    <nav class="menu">
+  <a href="/client.html">Clients</a>
+  <a href="/reclamos.html">claims</a>
+  <a href="/consultas.html">Consultas</a>
+  <a href="/product.html">products</a>
+</nav>
+
+    <h1>Clientes</h1>
+
+    <h2>Formulario Cliente</h2>
+    <form id="clienteForm">
+        <input type="hidden" id="clientId">
+        <input type="text" id="fullName" placeholder="Nombre completo" required>
+        <input type="email" id="email" placeholder="Email">
+        <input type="text" id="phone" placeholder="Teléfono">
+        <input type="text" id="identificationNumber" placeholder="Número de identidad">
+        <input type="text" id="address" placeholder="Dirección">
+        <button type="submit">Guardar</button>
+        <button type="button" onclick="resetForm()">Cancelar</button>
+    </form>
+
+    <h2>Listado de Clientes</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Identificación</th><th>Dirección</th><th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="clientesTableBody"></tbody>
+    </table>
+
+    <script src="js/client.js"></script>
+</body>
+</html>

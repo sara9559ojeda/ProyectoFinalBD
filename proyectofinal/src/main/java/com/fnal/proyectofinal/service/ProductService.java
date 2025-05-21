@@ -32,9 +32,5 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    /* 
-    public List<Object[]> getTopProductsWithMostClaims() {
-        return productRepository.findTopProductsWithMostClaims();
-    }*/
 }
 
