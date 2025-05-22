@@ -25,8 +25,23 @@ public class ProductService {
     }
 
     public Product save(Product product) {
-        return productRepository.save(product);
-    }
+     if (product.getName() == null || product.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be null or empty.");
+        }
+        if (product.getPrice() == null || product.getPrice() < 0) {
+            throw new IllegalArgumentException("Product price must be a non-negative value.");
+        }
+        if (product.getWarranty() == null || product.getWarranty().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product warranty cannot be null or empty.");
+        }
+        if (product.getDescription() == null || product.getDescription().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product description cannot be null or empty.");
+            
+        }
+       
+    return productRepository.save(product);
+}
+
 
     public void deleteById(Long id) {
         productRepository.deleteById(id);

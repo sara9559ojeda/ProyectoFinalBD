@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Support Management</title>
+    <link rel="stylesheet" href="css/support.css">
+</head>
+<body>
+     <nav class="menu">
+    <a href="/client.html">Clients</a>
+    <a href="/claim.html">Claims</a>
+    <a href="/consultas.html">Consultations</a>
+    <a href="/product.html">Products</a>
+    <a href="/sales.html">Sales</a>
+    <a href="/support.html">Support</a>
+    <a href="/technician.html">Technicians</a>
+  </nav>
+    <h1>Support Management</h1>
+
+    <section id="create-support">
+        <h2>Create New Support</h2>
+        <form id="support-form">
+            <label for="claimId">Claim ID:</label>
+            <input type="number" id="claimId" required><br>
+
+            <label for="technicianId">Technician ID:</label>
+            <input type="number" id="technicianId" required><br>
+
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" required><br>
+
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" required><br>
+
+            <label for="actionTaken">Action Taken:</label>
+            <input type="text" id="actionTaken" required><br>
+
+            <label for="result">Result:</label>
+            <input type="text" id="result" required><br>
+
+            <button type="submit">Save Support</button>
+        </form>
+    </section>
+
+    <section id="support-list">
+        <h2>All Supports</h2>
+        <ul id="support-items"></ul>
+    </section>
+
+    <script src="js/support.js"></script>
+</body>
+</html>

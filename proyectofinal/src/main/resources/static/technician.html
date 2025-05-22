@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Technician Management</title>
+  <link rel="stylesheet" href="css/technician.css">
+</head>
+<body>
+  <nav class="menu">
+    <a href="/client.html">Clients</a>
+    <a href="/claim.html">Claims</a>
+    <a href="/consultas.html">Consultations</a>
+    <a href="/product.html">Products</a>
+    <a href="/sales.html">Sales</a>
+    <a href="/support.html">Support</a>
+    <a href="/technician.html">Technicians</a>
+  </nav>
+
+  <h1>Technicians</h1>
+
+  <form id="technicianForm">
+    <input type="hidden" id="technicianId">
+    <input type="text" id="fullName" placeholder="Full Name" required>
+    <input type="text" id="specialty" placeholder="Specialty" required>
+    <input type="text" id="email" placeholder="Email">
+    <button type="submit">Save</button>
+    <button type="button" onclick="resetForm()">Cancel</button>
+  </form>
+
+  <h2>Technician List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Name</th><th>Specialty</th><th>Email</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="technicianTableBody"></tbody>
+  </table>
+
+  <script src="js/technician.js"></script>
+</body>
+</html>

@@ -25,6 +25,10 @@ public class ClientService {
     }
 
     public Client save(Client client) {
+        if (client.getFullName() == null || client.getFullName().isBlank()) {
+            throw new IllegalArgumentException("Client name cannot be empty.");
+        }
+        
         return clientRepository.save(client);
     }
 
@@ -32,7 +36,5 @@ public class ClientService {
         clientRepository.deleteById(id);
     }
 
-    /*public List<Object[]> getTopClientsWithMostClaimsLast6Months() {
-        return clientRepository.findTopClientsWithMostClaimsLast6Months();
-    }*/
+
 }

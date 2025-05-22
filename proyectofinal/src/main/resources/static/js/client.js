@@ -1,5 +1,7 @@
 const form = document.getElementById('clienteForm');
 const tableBody = document.getElementById('clientesTableBody');
+const errorDiv = document.getElementById('error-message');
+const successDiv = document.getElementById('success-message');
 
 window.onload = loadClientes;
 
@@ -29,6 +31,8 @@ function loadClientes() {
 
 form.onsubmit = (e) => {
     e.preventDefault();
+    clearMessages();
+
     const clientId = document.getElementById('clientId').value;
     const cliente = {
         fullName: document.getElementById('fullName').value,
@@ -47,14 +51,23 @@ form.onsubmit = (e) => {
         body: JSON.stringify(cliente)
     })
     .then(res => {
-        if (!res.ok) throw new Error("Error al guardar");
+        if (!res.ok) {
+            return res.json().then(err => {
+                throw new Error(err.message || "Error al guardar el cliente.");
+            });
+        }
+        return res.json();
+    })
+    .then(data => {
+        showSuccess("Cliente guardado correctamente.");
         resetForm();
         loadClientes();
     })
-    .catch(err => alert(err.message));
+    .catch(err => showError(err.message));
 };
 
 function editCliente(cliente) {
+    clearMessages();
     document.getElementById('clientId').value = cliente.clientId;
     document.getElementById('fullName').value = cliente.fullName;
     document.getElementById('email').value = cliente.email;
@@ -64,17 +77,45 @@ function editCliente(cliente) {
 }
 
 function deleteCliente(id) {
+    clearMessages();
     if (confirm('¿Seguro que deseas eliminar este cliente?')) {
         fetch(`/api/clientes/${id}`, { method: 'DELETE' })
             .then(res => {
-                if (!res.ok) throw new Error("Error al eliminar");
+                if (!res.ok) {
+                    return res.json().then(err => {
+                        throw new Error(err.message || "Error al eliminar el cliente.");
+                    });
+                }
+                return res.text();
+            })
+            .then(() => {
+                showSuccess("Cliente eliminado correctamente.");
                 loadClientes();
             })
-            .catch(err => alert(err.message));
+            .catch(err => showError(err.message));
     }
 }
 
 function resetForm() {
     form.reset();
     document.getElementById('clientId').value = '';
+}
+
+function showError(msg) {
+    errorDiv.textContent = msg;
+    errorDiv.style.display = 'block';
+    successDiv.style.display = 'none';
+}
+
+function showSuccess(msg) {
+    successDiv.textContent = msg;
+    successDiv.style.display = 'block';
+    errorDiv.style.display = 'none';
+}
+
+function clearMessages() {
+    errorDiv.textContent = '';
+    successDiv.textContent = '';
+    errorDiv.style.display = 'none';
+    successDiv.style.display = 'none';
 }

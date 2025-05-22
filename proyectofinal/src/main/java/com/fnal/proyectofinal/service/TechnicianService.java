@@ -16,7 +16,6 @@ public class TechnicianService {
         this.technicianRepository = technicianRepository;
     }
 
-    // CRUD básico
     public List<Technician> findAll() {
         return technicianRepository.findAll();
     }
@@ -26,6 +25,9 @@ public class TechnicianService {
     }
 
     public Technician save(Technician technician) {
+        if (technician.getFullName() == null || technician.getFullName().isBlank()) {
+        throw new IllegalArgumentException("Technician name cannot be empty.");
+    }
         return technicianRepository.save(technician);
     }
 

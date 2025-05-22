@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Clientes</title>
-    <link rel="stylesheet" href="css/clientes.css">
+    <link rel="stylesheet" href="css/client.css">
 </head>
 <body>
-    <nav class="menu">
-  <a href="/client.html">Clients</a>
-  <a href="/reclamos.html">claims</a>
-  <a href="/consultas.html">Consultas</a>
-  <a href="/product.html">products</a>
-</nav>
+     <nav class="menu">
+    <a href="/client.html">Clients</a>
+    <a href="/claim.html">Claims</a>
+    <a href="/consultas.html">Consultations</a>
+    <a href="/product.html">Products</a>
+    <a href="/sales.html">Sales</a>
+    <a href="/support.html">Support</a>
+    <a href="/technician.html">Technicians</a>
+  </nav>
 
     <h1>Clientes</h1>
 
@@ -26,6 +29,10 @@
         <button type="submit">Guardar</button>
         <button type="button" onclick="resetForm()">Cancelar</button>
     </form>
+    <div id="message-container" style="margin-top: 10px;">
+    <div id="error-message" style="display:none; color: red;"></div>
+    <div id="success-message" style="display:none; color: green;"></div>
+</div>
 
     <h2>Listado de Clientes</h2>
     <table>
