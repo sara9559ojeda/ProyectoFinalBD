@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface SupportRepository extends JpaRepository<Support, Long> {
 @Query(value = """
     SELECT AVG(DATEDIFF(fecha_fin, fecha_inicio)) AS avg_resolution_time
-    FROM postventa1.soportes
+    FROM soportes
     WHERE id_reclamo IS NOT NULL
       AND fecha_inicio IS NOT NULL
       AND fecha_fin IS NOT NULL
