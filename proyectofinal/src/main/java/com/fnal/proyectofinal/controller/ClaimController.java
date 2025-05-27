@@ -58,7 +58,7 @@ public class ClaimController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/clientes-top")
+    @GetMapping("/consultas/clientes-top")
     public List<Map<String, Object>> getClientesTop() {
         LocalDate fechaLimite = LocalDate.now().minusMonths(6);
         List<Object[]> resultados = claimRepository.findTopClientsWithMostClaimsInLastSemester(fechaLimite);
@@ -73,7 +73,7 @@ public class ClaimController {
         return response;
     }
 
-    @GetMapping("/productos-top")
+    @GetMapping("/consultas/productos-top")
     public List<Map<String, Object>> productosConMasReclamos() {
         List<Object[]> resultados = claimRepository.findProductsWithMostClaims();
 
@@ -87,7 +87,7 @@ public class ClaimController {
         return respuesta;
     }
 
-    @GetMapping("/resolved-in-less-than-7-days")
+    @GetMapping("/consultas/resueltos-rapido")
     public ResponseEntity<List<Claim>> getClaimsResolvedInLessThan7Days() {
         List<Claim> claims = claimRepository.findClaimsResolvedUnderSevenDays();
         if (claims.isEmpty()) {
@@ -96,4 +96,9 @@ public class ClaimController {
         return ResponseEntity.ok(claims);
     }
 
+    @GetMapping("/consultas/tiempo-promedio-resolucion")
+    public ResponseEntity<Double> getAverageResolutionTime() {
+        Double avgDays = claimRepository.findAverageResolutionTime();
+        return ResponseEntity.ok(avgDays != null ? avgDays : 0.0);
+    }
 }

@@ -25,16 +25,11 @@ public class Claim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_reclamo")
-    
     private Long claimId;
 
     @ManyToOne
-    @JoinColumn(name = "id_venta")
+    @JoinColumn(name = "id_venta", nullable = false)
     private Sale sale;
-
-    @ManyToOne
-    @JoinColumn(name = "id_producto")
-    private Product product;
 
     @Column(name = "fecha_reclamo")
     private LocalDate claimDate;
@@ -44,6 +39,9 @@ public class Claim {
 
     @Column(name = "estado")
     private String status;
+    
+    @Column(name = "descripcion")
+    private String description;
 
     @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL)
     @JsonIgnore

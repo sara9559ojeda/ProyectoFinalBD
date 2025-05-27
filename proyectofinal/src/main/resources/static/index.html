@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión - Proyecto Final</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .tab-button:hover, .tab-button.active {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #4a5568;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .response-area {
+            background: #f8f9fa;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .success {
+            color: #28a745;
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .special-endpoints {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .special-endpoints h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .endpoint-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Sistema de Gestión Empresarial</h1>
+            <p>Interfaz de administración para reclamos, clientes, productos, ventas, soporte y técnicos</p>
+        </div>
+
+        <div class="nav-tabs">
+            <div class="tab-button active" onclick="showTab('clientes')">👥 Clientes</div>
+            <div class="tab-button" onclick="showTab('productos')">📦 Productos</div>
+            <div class="tab-button" onclick="showTab('ventas')">💰 Ventas</div>
+            <div class="tab-button" onclick="showTab('reclamos')">📝 Reclamos</div>
+            <div class="tab-button" onclick="showTab('tecnicos')">🔧 Técnicos</div>
+            <div class="tab-button" onclick="showTab('soportes')">🛠️ Soporte</div>
+        </div>
+
+        <!-- Tab Clientes -->
+        <div id="clientes" class="tab-content active">
+            <h2 class="section-title">Gestión de Clientes</h2>
+            <div class="form-container">
+                <div class="form-section">
+                    <h3>Crear/Actualizar Cliente</h3>
+                    <form id="clientForm">
+                        <div class="form-group">
+                            <label>ID (para actualizar):</label>
+                            <input type="number" id="clientId" placeholder="Dejar vacío para crear nuevo">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre Completo:</label>
+                            <input type="text" id="clientFullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email:</label>
+                            <input type="email" id="clientEmail">
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono:</label>
+                            <input type="text" id="clientPhone">
+                        </div>
+                        <div class="form-group">
+                            <label>Número de Identidad:</label>
+                            <input type="text" id="clientIdentification">
+                        </div>
+                        <div class="form-group">
+                            <label>Dirección:</label>
+                            <textarea id="clientAddress" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">💾 Guardar Cliente</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm('clientForm')">🗑️ Limpiar</button>
+                    </form>
+                </div>
+                <div class="form-section">
+                    <h3>Operaciones</h3>
+                    <button class="btn btn-info" onclick="getAllClients()">📋 Listar Todos</button>
+                    <div class="form-group">
+                        <label>Buscar por ID:</label>
+                        <input type="number" id="searchClientId" placeholder="ID del cliente">
+                        <button class="btn btn-info" onclick="getClientById()">🔍 Buscar</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Eliminar por ID:</label>
+                        <input type="number" id="deleteClientId" placeholder="ID del cliente">
+                        <button class="btn btn-danger" onclick="deleteClient()">🗑️ Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            <div id="clientResponse" class="response-area"></div>
+        </div>
+
+        <!-- Tab Productos -->
+        <div id="productos" class="tab-content">
+            <h2 class="section-title">Gestión de Productos</h2>
+            <div class="form-container">
+                <div class="form-section">
+                    <h3>Crear/Actualizar Producto</h3>
+                    <form id="productForm">
+                        <div class="form-group">
+                            <label>ID (para actualizar):</label>
+                            <input type="number" id="productId" placeholder="Dejar vacío para crear nuevo">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre:</label>
+                            <input type="text" id="productName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción:</label>
+                            <textarea id="productDescription" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio:</label>
+                            <input type="number" step="0.01" id="productPrice">
+                        </div>
+                        <div class="form-group">
+                            <label>Garantía:</label>
+                            <input type="text" id="productWarranty">
+                        </div>
+                        <button type="submit" class="btn btn-primary">💾 Guardar Producto</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm('productForm')">🗑️ Limpiar</button>
+                    </form>
+                </div>
+                <div class="form-section">
+                    <h3>Operaciones</h3>
+                    <button class="btn btn-info" onclick="getAllProducts()">📋 Listar Todos</button>
+                    <div class="form-group">
+                        <label>Buscar por ID:</label>
+                        <input type="number" id="searchProductId" placeholder="ID del producto">
+                        <button class="btn btn-info" onclick="getProductById()">🔍 Buscar</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Eliminar por ID:</label>
+                        <input type="number" id="deleteProductId" placeholder="ID del producto">
+                        <button class="btn btn-danger" onclick="deleteProduct()">🗑️ Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            <div id="productResponse" class="response-area"></div>
+        </div>
+
+        <!-- Tab Ventas -->
+        <div id="ventas" class="tab-content">
+            <h2 class="section-title">Gestión de Ventas</h2>
+            <div class="form-container">
+                <div class="form-section">
+                    <h3>Crear/Actualizar Venta</h3>
+                    <form id="saleForm">
+                        <div class="form-group">
+                            <label>ID (para actualizar):</label>
+                            <input type="number" id="saleId" placeholder="Dejar vacío para crear nuevo">
+                        </div>
+                        <div class="form-group">
+                            <label>ID Cliente:</label>
+                            <input type="number" id="saleClientId" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ID Producto:</label>
+                            <input type="number" id="saleProductId" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Venta:</label>
+                            <input type="date" id="saleSaleDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">💾 Guardar Venta</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm('saleForm')">🗑️ Limpiar</button>
+                    </form>
+                </div>
+                <div class="form-section">
+                    <h3>Operaciones</h3>
+                    <button class="btn btn-info" onclick="getAllSales()">📋 Listar Todas</button>
+                    <div class="form-group">
+                        <label>Buscar por ID:</label>
+                        <input type="number" id="searchSaleId" placeholder="ID de la venta">
+                        <button class="btn btn-info" onclick="getSaleById()">🔍 Buscar</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Eliminar por ID:</label>
+                        <input type="number" id="deleteSaleId" placeholder="ID de la venta">
+                        <button class="btn btn-danger" onclick="deleteSale()">🗑️ Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            <div id="saleResponse" class="response-area"></div>
+        </div>
+
+        <!-- Tab Reclamos -->
+        <div id="reclamos" class="tab-content">
+            <h2 class="section-title">Gestión de Reclamos</h2>
+            <div class="form-container">
+                <div class="form-section">
+                    <h3>Crear/Actualizar Reclamo</h3>
+                    <form id="claimForm">
+                        <div class="form-group">
+                            <label>ID (para actualizar):</label>
+                            <input type="number" id="claimId" placeholder="Dejar vacío para crear nuevo">
+                        </div>
+                        <div class="form-group">
+                            <label>ID Venta:</label>
+                            <input type="number" id="claimSaleId" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ID Producto:</label>
+                            <input type="number" id="claimProductId" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Reclamo:</label>
+                            <input type="date" id="claimDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo:</label>
+                            <input type="text" id="claimType" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Estado:</label>
+                            <select id="claimStatus" required>
+                                <option value="">Seleccionar estado</option>
+                                <option value="Abierto">Abierto</option>
+                                <option value="En Proceso">En Proceso</option>
+                                <option value="Resuelto">Resuelto</option>
+                                <option value="Cerrado">Cerrado</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Reclamo</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm('claimForm')">🗑️ Limpiar</button>
+                    </form>
+                </div>
+                <div class="form-section">
+                    <h3>Operaciones</h3>
+                    <button class="btn btn-info" onclick="getAllClaims()"> Listar Todos</button>
+                    <div class="form-group">
+                        <label>Buscar por ID:</label>
+                        <input type="number" id="searchClaimId" placeholder="ID del reclamo">
+                        <button class="btn btn-info" onclick="getClaimById()">Buscar</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Eliminar por ID:</label>
+                        <input type="number" id="deleteClaimId" placeholder="ID del reclamo">
+                        <button class="btn btn-danger" onclick="deleteClaim()"> Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="special-endpoints">
+                <h3>Reportes Especiales de Reclamos</h3>
+                <div class="endpoint-buttons">
+                    <button class="btn btn-success" onclick="getTopClients()">🏆 Clientes con Más Reclamos (6 meses)</button>
+                    <button class="btn btn-success" onclick="getTopProducts()">📦 Productos con Más Reclamos</button>
+                    <button class="btn btn-success" onclick="getClaimsResolvedQuickly()">⚡ Reclamos Resueltos en Menos de 7 Días</button>
+                </div>
+            </div>
+            
+            <div id="claimResponse" class="response-area"></div>
+        </div>
+
+        <div id="tecnicos" class="tab-content">
+            <h2 class="section-title">Gestión de Técnicos</h2>
+            <div class="form-container">
+                <div class="form-section">
+                    <h3>Crear/Actualizar Técnico</h3>
+                    <form id="technicianForm">
+                        <div class="form-group">
+                            <label>ID (para actualizar):</label>
+                            <input type="number" id="technicianId" placeholder="Dejar vacío para crear nuevo">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre Completo:</label>
+                            <input type="text" id="technicianFullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Especialidad:</label>
+                            <input type="text" id="technicianSpecialty" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">💾 Guardar Técnico</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm('technicianForm')">🗑️ Limpiar</button>
+                    </form>
+                </div>
+                <div class="form-section">
+                    <h3>Operaciones</h3>
+                    <button class="btn btn-info" onclick="getAllTechnicians()">📋 Listar Todos</button>
+                    <div class="form-group">
+                        <label>Buscar por ID:</label>
+                        <input type="number" id="searchTechnicianId" placeholder="ID del técnico">
+                        <button class="btn btn-info" onclick="getTechnicianById()">🔍 Buscar</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Eliminar por ID:</label>
+                        <input type="number" id="deleteTechnicianId" placeholder="ID del técnico">
+                        <button class="btn btn-danger" onclick="deleteTechnician()">🗑️ Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            <div id="technicianResponse" class="response-area"></div>
+        </div>
+
+        <!-- Tab Soporte -->
+        <div id="soportes" class="tab-content">
+            <h2 class="section-title">Gestión de Soporte</h2>
+            <div class="form-container">
+                <div class="form-section">
+                    <h3>Crear/Actualizar Soporte</h3>
+                    <form id="supportForm">
+                        <div class="form-group">
+                            <label>ID (para actualizar):</label>
+                            <input type="number" id="supportId" placeholder="Dejar vacío para crear nuevo">
+                        </div>
+                        <div class="form-group">
+                            <label>ID Reclamo:</label>
+                            <input type="number" id="supportClaimId" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ID Técnico:</label>
+                            <input type="number" id="supportTechnicianId" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha Inicio:</label>
+                            <input type="date" id="supportStartDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha Fin:</label>
+                            <input type="date" id="supportEndDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Acción Tomada:</label>
+                            <textarea id="supportActionTaken" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Resultado:</label>
+                            <textarea id="supportResult" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">💾 Guardar Soporte</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm('supportForm')">🗑️ Limpiar</button>
+                    </form>
+                </div>
+                <div class="form-section">
+                    <h3>Operaciones</h3>
+                    <button class="btn btn-info" onclick="getAllSupports()">📋 Listar Todos</button>
+                    <div class="form-group">
+                        <label>Buscar por ID:</label>
+                        <input type="number" id="searchSupportId" placeholder="ID del soporte">
+                        <button class="btn btn-info" onclick="getSupportById()">🔍 Buscar</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Eliminar por ID:</label>
+                        <input type="number" id="deleteSupportId" placeholder="ID del soporte">
+                        <button class="btn btn-danger" onclick="deleteSupport()">🗑️ Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="special-endpoints">
+                <h3>📊 Reportes Especiales de Soporte</h3>
+                <div class="endpoint-buttons">
+                    <button class="btn btn-success" onclick="getAverageResolutionTime()">⏱️ Tiempo Promedio de Resolución</button>
+                </div>
+            </div>
+            
+            <div id="supportResponse" class="response-area"></div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:8080/api';
+
+        // Función para cambiar tabs
+        function showTab(tabName) {
+            // Ocultar todos los tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remover clase active de todos los botones
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Mostrar el tab seleccionado
+            document.getElementById(tabName).classList.add('active');
+            
+            // Activar el botón correspondiente
+            event.target.classList.add('active');
+        }
+
+        // Función para limpiar formularios
+        function clearForm(formId) {
+            document.getElementById(formId).reset();
+        }
+
+        // Función para mostrar loading
+        function showLoading(responseId) {
+            document.getElementById(responseId).innerHTML = '<div class="loading"></div> Cargando...';
+        }
+
+        // Función para mostrar respuesta
+        function showResponse(responseId, data, isError = false) {
+            const responseDiv = document.getElementById(responseId);
+            const className = isError ? 'error' : 'success';
+            
+            if (typeof data === 'object') {
+                responseDiv.innerHTML = `<div class="${className}"><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } else {
+                responseDiv.innerHTML = `<div class="${className}">${data}</div>`;
+            }
+        }
+
+        // === FUNCIONES PARA CLIENTES ===
+        async function handleClientForm(event) {
+            event.preventDefault();
+            const id = document.getElementById('clientId').value;
+            const clientData = {
+                fullName: document.getElementById('clientFullName').value,
+                email: document.getElementById('clientEmail').value,
+                phone: document.getElementById('clientPhone').value,
+                identificationNumber: document.getElementById('clientIdentification').value,
+                address: document.getElementById('clientAddress').value
+            };
+
+            showLoading('clientResponse');
+            try {
+                let response;
+                if (id) {
+                    response = await fetch(`${BASE_URL}/clientes/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(clientData)
+                    });
+                } else {
+                    response = await fetch(`${BASE_URL}/clientes`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(clientData)
+                    });
+                }
+                
+                const result = await response.json();
+                showResponse('clientResponse', result);
+            } catch (error) {
+                showResponse('clientResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getAllClients() {
+            showLoading('clientResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/clientes`);
+                const data = await response.json();
+                showResponse('clientResponse', data);
+            } catch (error) {
+                showResponse('clientResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getClientById() {
+            const id = document.getElementById('searchClientId').value;
+            if (!id) {
+                showResponse('clientResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            showLoading('clientResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/clientes/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    showResponse('clientResponse', data);
+                } else {
+                    showResponse('clientResponse', 'Cliente no encontrado', true);
+                }
+            } catch (error) {
+                showResponse('clientResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function deleteClient() {
+            const id = document.getElementById('deleteClientId').value;
+            if (!id) {
+                showResponse('clientResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            if (!confirm('¿Está seguro de eliminar este cliente?')) return;
+            
+            showLoading('clientResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/clientes/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showResponse('clientResponse', 'Cliente eliminado exitosamente');
+                } else {
+                    showResponse('clientResponse', 'Cliente no encontrado', true);
+                }
+            } catch (error) {
+                showResponse('clientResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        // === FUNCIONES PARA PRODUCTOS ===
+        async function handleProductForm(event) {
+            event.preventDefault();
+            const id = document.getElementById('productId').value;
+            const productData = {
+                name: document.getElementById('productName').value,
+                description: document.getElementById('productDescription').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                warranty: document.getElementById('productWarranty').value
+            };
+
+            showLoading('productResponse');
+            try {
+                let response;
+                if (id) {
+                    response = await fetch(`${BASE_URL}/productos/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(productData)
+                    });
+                } else {
+                    response = await fetch(`${BASE_URL}/productos`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(productData)
+                    });
+                }
+                
+                const result = await response.json();
+                showResponse('productResponse', result);
+            } catch (error) {
+                showResponse('productResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getAllProducts() {
+            showLoading('productResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/productos`);
+                const data = await response.json();
+                showResponse('productResponse', data);
+            } catch (error) {
+                showResponse('productResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getProductById() {
+            const id = document.getElementById('searchProductId').value;
+            if (!id) {
+                showResponse('productResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            showLoading('productResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/productos/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    showResponse('productResponse', data);
+                } else {
+                    showResponse('productResponse', 'Producto no encontrado', true);
+                }
+            } catch (error) {
+                showResponse('productResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function deleteProduct() {
+            const id = document.getElementById('deleteProductId').value;
+            if (!id) {
+                showResponse('productResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            if (!confirm('¿Está seguro de eliminar este producto?')) return;
+            
+            showLoading('productResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/productos/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showResponse('productResponse', 'Producto eliminado exitosamente');
+                } else {
+                    showResponse('productResponse', 'Producto no encontrado', true);
+                }
+            } catch (error) {
+                showResponse('productResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        // === FUNCIONES PARA VENTAS ===
+        async function handleSaleForm(event) {
+            event.preventDefault();
+            const id = document.getElementById('saleId').value;
+            const saleData = {
+                client: { clientId: parseInt(document.getElementById('saleClientId').value) },
+                product: { productId: parseInt(document.getElementById('saleProductId').value) },
+                saleDate: document.getElementById('saleSaleDate').value
+            };
+
+            showLoading('saleResponse');
+            try {
+                let response;
+                if (id) {
+                    response = await fetch(`${BASE_URL}/ventas/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(saleData)
+                    });
+                } else {
+                    response = await fetch(`${BASE_URL}/ventas`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(saleData)
+                    });
+                }
+                
+                const result = await response.json();
+                showResponse('saleResponse', result);
+            } catch (error) {
+                showResponse('saleResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getAllSales() {
+            showLoading('saleResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/ventas`);
+                const data = await response.json();
+                showResponse('saleResponse', data);
+            } catch (error) {
+                showResponse('saleResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getSaleById() {
+            const id = document.getElementById('searchSaleId').value;
+            if (!id) {
+                showResponse('saleResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            showLoading('saleResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/ventas/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    showResponse('saleResponse', data);
+                } else {
+                    showResponse('saleResponse', 'Venta no encontrada', true);
+                }
+            } catch (error) {
+                showResponse('saleResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function deleteSale() {
+            const id = document.getElementById('deleteSaleId').value;
+            if (!id) {
+                showResponse('saleResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            if (!confirm('¿Está seguro de eliminar esta venta?')) return;
+            
+            showLoading('saleResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/ventas/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showResponse('saleResponse', 'Venta eliminada exitosamente');
+                } else {
+                    showResponse('saleResponse', 'Venta no encontrada', true);
+                }
+            } catch (error) {
+                showResponse('saleResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        // === FUNCIONES PARA RECLAMOS ===
+        async function handleClaimForm(event) {
+            event.preventDefault();
+            const id = document.getElementById('claimId').value;
+            const claimData = {
+                sale: { saleId: parseInt(document.getElementById('claimSaleId').value) },
+                product: { productId: parseInt(document.getElementById('claimProductId').value) },
+                claimDate: document.getElementById('claimDate').value,
+                type: document.getElementById('claimType').value,
+                status: document.getElementById('claimStatus').value
+            };
+
+            showLoading('claimResponse');
+            try {
+                let response;
+                if (id) {
+                    response = await fetch(`${BASE_URL}/reclamos/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(claimData)
+                    });
+                } else {
+                    response = await fetch(`${BASE_URL}/reclamos`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(claimData)
+                    });
+                }
+                
+                const result = await response.json();
+                showResponse('claimResponse', result);
+            } catch (error) {
+                showResponse('claimResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getAllClaims() {
+            showLoading('claimResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/reclamos`);
+                const data = await response.json();
+                showResponse('claimResponse', data);
+            } catch (error) {
+                showResponse('claimResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getClaimById() {
+            const id = document.getElementById('searchClaimId').value;
+            if (!id) {
+                showResponse('claimResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            showLoading('claimResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/reclamos/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    showResponse('claimResponse', data);
+                } else {
+                    showResponse('claimResponse', 'Reclamo no encontrado', true);
+                }
+            } catch (error) {
+                showResponse('claimResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function deleteClaim() {
+            const id = document.getElementById('deleteClaimId').value;
+            if (!id) {
+                showResponse('claimResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            if (!confirm('¿Está seguro de eliminar este reclamo?')) return;
+            
+            showLoading('claimResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/reclamos/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showResponse('claimResponse', 'Reclamo eliminado exitosamente');
+                } else {
+                    showResponse('claimResponse', 'Reclamo no encontrado', true);
+                }
+            } catch (error) {
+                showResponse('claimResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        // Funciones especiales para reclamos
+        async function getTopClients() {
+            showLoading('claimResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/reclamos/clientes-top`);
+                const data = await response.json();
+                showResponse('claimResponse', data);
+            } catch (error) {
+                showResponse('claimResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getTopProducts() {
+            showLoading('claimResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/reclamos/productos-top`);
+                const data = await response.json();
+                showResponse('claimResponse', data);
+            } catch (error) {
+                showResponse('claimResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getClaimsResolvedQuickly() {
+            showLoading('claimResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/reclamos/resolved-in-less-than-7-days`);
+                const data = await response.json();
+                showResponse('claimResponse', data);
+            } catch (error) {
+                showResponse('claimResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        // === FUNCIONES PARA TÉCNICOS ===
+        async function handleTechnicianForm(event) {
+            event.preventDefault();
+            const id = document.getElementById('technicianId').value;
+            const technicianData = {
+                fullName: document.getElementById('technicianFullName').value,
+                specialty: document.getElementById('technicianSpecialty').value
+            };
+
+            showLoading('technicianResponse');
+            try {
+                let response;
+                if (id) {
+                    response = await fetch(`${BASE_URL}/tecnicos/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(technicianData)
+                    });
+                } else {
+                    response = await fetch(`${BASE_URL}/tecnicos`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(technicianData)
+                    });
+                }
+                
+                const result = await response.json();
+                showResponse('technicianResponse', result);
+            } catch (error) {
+                showResponse('technicianResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getAllTechnicians() {
+            showLoading('technicianResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/tecnicos`);
+                const data = await response.json();
+                showResponse('technicianResponse', data);
+            } catch (error) {
+                showResponse('technicianResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getTechnicianById() {
+            const id = document.getElementById('searchTechnicianId').value;
+            if (!id) {
+                showResponse('technicianResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            showLoading('technicianResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/tecnicos/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    showResponse('technicianResponse', data);
+                } else {
+                    showResponse('technicianResponse', 'Técnico no encontrado', true);
+                }
+            } catch (error) {
+                showResponse('technicianResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function deleteTechnician() {
+            const id = document.getElementById('deleteTechnicianId').value;
+            if (!id) {
+                showResponse('technicianResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            if (!confirm('¿Está seguro de eliminar este técnico?')) return;
+            
+            showLoading('technicianResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/tecnicos/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showResponse('technicianResponse', 'Técnico eliminado exitosamente');
+                } else {
+                    showResponse('technicianResponse', 'Técnico no encontrado', true);
+                }
+            } catch (error) {
+                showResponse('technicianResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        // === FUNCIONES PARA SOPORTE ===
+        async function handleSupportForm(event) {
+            event.preventDefault();
+            const id = document.getElementById('supportId').value;
+            const supportData = {
+                claim: { claimId: parseInt(document.getElementById('supportClaimId').value) },
+                technician: { technicianId: parseInt(document.getElementById('supportTechnicianId').value) },
+                startDate: document.getElementById('supportStartDate').value,
+                endDate: document.getElementById('supportEndDate').value || null,
+                actionTaken: document.getElementById('supportActionTaken').value,
+                result: document.getElementById('supportResult').value
+            };
+
+            showLoading('supportResponse');
+            try {
+                let response;
+                if (id) {
+                    response = await fetch(`${BASE_URL}/soportes/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(supportData)
+                    });
+                } else {
+                    response = await fetch(`${BASE_URL}/soportes`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(supportData)
+                    });
+                }
+                
+                const result = await response.json();
+                showResponse('supportResponse', result);
+            } catch (error) {
+                showResponse('supportResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getAllSupports() {
+            showLoading('supportResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/soportes`);
+                const data = await response.json();
+                showResponse('supportResponse', data);
+            } catch (error) {
+                showResponse('supportResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function getSupportById() {
+            const id = document.getElementById('searchSupportId').value;
+            if (!id) {
+                showResponse('supportResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            showLoading('supportResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/soportes/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    showResponse('supportResponse', data);
+                } else {
+                    showResponse('supportResponse', 'Soporte no encontrado', true);
+                }
+            } catch (error) {
+                showResponse('supportResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function deleteSupport() {
+            const id = document.getElementById('deleteSupportId').value;
+            if (!id) {
+                showResponse('supportResponse', 'Por favor ingrese un ID', true);
+                return;
+            }
+            
+            if (!confirm('¿Está seguro de eliminar este soporte?')) return;
+            
+            showLoading('supportResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/soportes/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showResponse('supportResponse', 'Soporte eliminado exitosamente');
+                } else {
+                    showResponse('supportResponse', 'Soporte no encontrado', true);
+                }
+            } catch (error) {
+                showResponse('supportResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        // Función especial para soporte
+        async function getAverageResolutionTime() {
+            showLoading('supportResponse');
+            try {
+                const response = await fetch(`${BASE_URL}/soportes/avg-resolution-time`);
+                const data = await response.json();
+                showResponse('supportResponse', `Tiempo promedio de resolución: ${data} días`);
+            } catch (error) {
+                showResponse('supportResponse', `Error: ${error.message}`, true);
+            }
+        }
+
+        // Event listeners para formularios
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('clientForm').addEventListener('submit', handleClientForm);
+            document.getElementById('productForm').addEventListener('submit', handleProductForm);
+            document.getElementById('saleForm').addEventListener('submit', handleSaleForm);
+            document.getElementById('claimForm').addEventListener('submit', handleClaimForm);
+            document.getElementById('technicianForm').addEventListener('submit', handleTechnicianForm);
+            document.getElementById('supportForm').addEventListener('submit', handleSupportForm);
+        });
+    </script>
+</body>
+</html>
