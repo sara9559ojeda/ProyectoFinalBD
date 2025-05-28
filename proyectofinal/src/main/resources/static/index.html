@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -171,7 +172,8 @@
             background: white;
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #eee;
@@ -246,7 +248,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .modal {
@@ -275,17 +279,18 @@
             .nav-tabs {
                 flex-direction: column;
             }
-            
+
             .form-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .container {
                 padding: 10px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -567,7 +572,7 @@
 
     <script>
         const API_BASE = 'http://localhost:8080/api';
-        
+
         let currentEditItem = null;
         let currentEditType = null;
 
@@ -579,12 +584,12 @@
             document.querySelectorAll('.nav-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
-            
+
             document.getElementById(sectionId).classList.add('active');
             event.target.classList.add('active');
-            
+
             // Load data when switching sections
-            switch(sectionId) {
+            switch (sectionId) {
                 case 'dashboard':
                     loadDashboard();
                     break;
@@ -619,12 +624,12 @@
             const alertDiv = document.createElement('div');
             alertDiv.className = `alert alert-${type}`;
             alertDiv.textContent = message;
-            
+
             document.querySelector('.content.active').insertBefore(
-                alertDiv, 
+                alertDiv,
                 document.querySelector('.content.active').firstChild
             );
-            
+
             setTimeout(() => alertDiv.remove(), 5000);
         }
 
@@ -637,15 +642,15 @@
                     },
                     ...options
                 });
-                
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                
+
                 if (response.status === 204) {
                     return null;
                 }
-                
+
                 return await response.json();
             } catch (error) {
                 console.error('API Error:', error);
@@ -663,7 +668,7 @@
                     apiRequest('/ventas'),
                     apiRequest('/reclamos')
                 ]);
-                
+
                 document.getElementById('totalClientes').textContent = clients.length;
                 document.getElementById('totalProductos').textContent = products.length;
                 document.getElementById('totalVentas').textContent = sales.length;
@@ -682,12 +687,12 @@
                 identificationNumber: document.getElementById('clientId').value,
                 address: document.getElementById('clientAddress').value
             };
-            
+
             if (!client.fullName) {
                 showAlert('El nombre es requerido', 'error');
                 return;
             }
-            
+
             try {
                 await apiRequest('/clientes', {
                     method: 'POST',
@@ -747,7 +752,7 @@
 
         async function deleteClient(id) {
             if (!confirm('¿Está seguro de eliminar este cliente?')) return;
-            
+
             try {
                 await apiRequest(`/clientes/${id}`, { method: 'DELETE' });
                 showAlert('Cliente eliminado exitosamente');
@@ -773,12 +778,12 @@
                 price: parseFloat(document.getElementById('productPrice').value),
                 warranty: document.getElementById('productWarranty').value
             };
-            
+
             if (!product.name || !product.price) {
                 showAlert('Nombre y precio son requeridos', 'error');
                 return;
             }
-            
+
             try {
                 await apiRequest('/productos', {
                     method: 'POST',
@@ -836,7 +841,7 @@
 
         async function deleteProduct(id) {
             if (!confirm('¿Está seguro de eliminar este producto?')) return;
-            
+
             try {
                 await apiRequest(`/productos/${id}`, { method: 'DELETE' });
                 showAlert('Producto eliminado exitosamente');
@@ -860,12 +865,12 @@
                 product: { productId: parseInt(document.getElementById('saleProduct').value) },
                 saleDate: document.getElementById('saleDate').value
             };
-            
+
             if (!sale.client.clientId || !sale.product.productId || !sale.saleDate) {
                 showAlert('Todos los campos son requeridos', 'error');
                 return;
             }
-            
+
             try {
                 await apiRequest('/ventas', {
                     method: 'POST',
@@ -921,7 +926,7 @@
 
         async function deleteSale(id) {
             if (!confirm('¿Está seguro de eliminar esta venta?')) return;
-            
+
             try {
                 await apiRequest(`/ventas/${id}`, { method: 'DELETE' });
                 showAlert('Venta eliminada exitosamente');
@@ -972,12 +977,12 @@
                 status: document.getElementById('claimStatus').value,
                 description: document.getElementById('claimDescription').value
             };
-            
+
             if (!claim.sale.saleId || !claim.claimDate || !claim.type || !claim.status) {
                 showAlert('Todos los campos obligatorios son requeridos', 'error');
                 return;
             }
-            
+
             try {
                 await apiRequest('/reclamos', {
                     method: 'POST',
@@ -1037,7 +1042,7 @@
 
         async function deleteClaim(id) {
             if (!confirm('¿Está seguro de eliminar este reclamo?')) return;
-            
+
             try {
                 await apiRequest(`/reclamos/${id}`, { method: 'DELETE' });
                 showAlert('Reclamo eliminado exitosamente');
@@ -1080,12 +1085,12 @@
                 actionTaken: document.getElementById('supportAction').value,
                 result: document.getElementById('supportResult').value
             };
-            
+
             if (!support.claim.claimId || !support.technician.technicianId || !support.startDate) {
                 showAlert('Reclamo, técnico y fecha de inicio son requeridos', 'error');
                 return;
             }
-            
+
             try {
                 await apiRequest('/soportes', {
                     method: 'POST',
@@ -1147,7 +1152,7 @@
 
         async function deleteSupport(id) {
             if (!confirm('¿Está seguro de eliminar este soporte?')) return;
-            
+
             try {
                 await apiRequest(`/soportes/${id}`, { method: 'DELETE' });
                 showAlert('Soporte eliminado exitosamente');
@@ -1198,12 +1203,12 @@
                 fullName: document.getElementById('technicianName').value,
                 specialty: document.getElementById('technicianSpecialty').value
             };
-            
+
             if (!technician.fullName || !technician.specialty) {
                 showAlert('Nombre y especialidad son requeridos', 'error');
                 return;
             }
-            
+
             try {
                 await apiRequest('/tecnicos', {
                     method: 'POST',
@@ -1257,7 +1262,7 @@
 
         async function deleteTechnician(id) {
             if (!confirm('¿Está seguro de eliminar este técnico?')) return;
-            
+
             try {
                 await apiRequest(`/tecnicos/${id}`, { method: 'DELETE' });
                 showAlert('Técnico eliminado exitosamente');
@@ -1368,29 +1373,174 @@
         }
 
         // Edit functions (placeholder implementations)
-        function editClient(id) {
-            showAlert('Funcionalidad de edición en desarrollo', 'error');
+        async function editClient(id) {
+            const updatedClient = {
+                fullName: document.getElementById('clientName').value,
+                email: document.getElementById('clientEmail').value,
+                phone: document.getElementById('clientPhone').value,
+                identificationNumber: document.getElementById('clientId').value,
+                address: document.getElementById('clientAddress').value
+            };
+
+            if (!updatedClient.fullName) {
+                showAlert('El nombre es requerido', 'error');
+                return;
+            }
+
+            try {
+                await apiRequest(`/clientes/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(updatedClient)
+                });
+                showAlert('Cliente actualizado exitosamente');
+                clearClientForm();
+                loadClients();
+            } catch (error) {
+                console.error('Error updating client:', error);
+                showAlert('Hubo un error al actualizar el cliente', 'error');
+            }
         }
 
-        function editProduct(id) {
-            showAlert('Funcionalidad de edición en desarrollo', 'error');
+
+        async function editProduct(id) {
+            const updatedProduct = {
+                name: document.getElementById('productName').value,
+                description: document.getElementById('productDescription').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                warranty: document.getElementById('productWarranty').value
+            };
+
+            if (!updatedProduct.name || isNaN(updatedProduct.price)) {
+                showAlert('Nombre y precio son requeridos', 'error');
+                return;
+            }
+
+            try {
+                await apiRequest(`/productos/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(updatedProduct)
+                });
+                showAlert('Producto actualizado exitosamente');
+                clearProductForm();
+                loadProducts();
+            } catch (error) {
+                console.error('Error updating product:', error);
+                showAlert('Hubo un error al actualizar el producto', 'error');
+            }
         }
 
-        function editSale(id) {
-            showAlert('Funcionalidad de edición en desarrollo', 'error');
+
+        async function editSale(id) {
+            const updatedSale = {
+                client: { clientId: parseInt(document.getElementById('saleClient').value) },
+                product: { productId: parseInt(document.getElementById('saleProduct').value) },
+                saleDate: document.getElementById('saleDate').value
+            };
+
+            if (!updatedSale.client.clientId || !updatedSale.product.productId || !updatedSale.saleDate) {
+                showAlert('Todos los campos son requeridos', 'error');
+                return;
+            }
+
+            try {
+                await apiRequest(`/ventas/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(updatedSale)
+                });
+                showAlert('Venta actualizada exitosamente');
+                clearSaleForm();
+                loadSales();
+            } catch (error) {
+                console.error('Error updating sale:', error);
+                showAlert('Hubo un error al actualizar la venta', 'error');
+            }
         }
 
-        function editClaim(id) {
-            showAlert('Funcionalidad de edición en desarrollo', 'error');
+
+        async function editClaim(id) {
+            const updatedClaim = {
+                sale: { saleId: parseInt(document.getElementById('claimSale').value) },
+                claimDate: document.getElementById('claimDate').value,
+                type: document.getElementById('claimType').value,
+                status: document.getElementById('claimStatus').value,
+                description: document.getElementById('claimDescription').value
+            };
+
+            if (!updatedClaim.sale.saleId || !updatedClaim.claimDate || !updatedClaim.type || !updatedClaim.status) {
+                showAlert('Todos los campos obligatorios son requeridos', 'error');
+                return;
+            }
+
+            try {
+                await apiRequest(`/reclamos/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(updatedClaim)
+                });
+                showAlert('Reclamo actualizado exitosamente');
+                clearClaimForm();
+                loadClaims();
+            } catch (error) {
+                console.error('Error updating claim:', error);
+                showAlert('Hubo un error al actualizar el reclamo', 'error');
+            }
         }
 
-        function editSupport(id) {
-            showAlert('Funcionalidad de edición en desarrollo', 'error');
+
+        async function editSupport(id) {
+            const updatedSupport = {
+                claim: { claimId: parseInt(document.getElementById('supportClaim').value) },
+                technician: { technicianId: parseInt(document.getElementById('supportTechnician').value) },
+                startDate: document.getElementById('supportStartDate').value,
+                endDate: document.getElementById('supportEndDate').value,
+                actionTaken: document.getElementById('supportAction').value,
+                result: document.getElementById('supportResult').value
+            };
+
+            if (!updatedSupport.claim.claimId || !updatedSupport.technician.technicianId || !updatedSupport.startDate) {
+                showAlert('Reclamo, técnico y fecha de inicio son requeridos', 'error');
+                return;
+            }
+
+            try {
+                await apiRequest(`/soportes/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(updatedSupport)
+                });
+                showAlert('Soporte actualizado exitosamente');
+                clearSupportForm();
+                loadSupports();
+            } catch (error) {
+                console.error('Error updating support:', error);
+                showAlert('Hubo un error al actualizar el soporte', 'error');
+            }
         }
 
-        function editTechnician(id) {
-            showAlert('Funcionalidad de edición en desarrollo', 'error');
+
+        async function editTechnician(id) {
+            const updatedTechnician = {
+                fullName: document.getElementById('technicianName').value,
+                specialty: document.getElementById('technicianSpecialty').value
+            };
+
+            if (!updatedTechnician.fullName || !updatedTechnician.specialty) {
+                showAlert('Nombre y especialidad son requeridos', 'error');
+                return;
+            }
+
+            try {
+                await apiRequest(`/tecnicos/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(updatedTechnician)
+                });
+                showAlert('Técnico actualizado exitosamente');
+                clearTechnicianForm();
+                loadTechnicians();
+            } catch (error) {
+                console.error('Error updating technician:', error);
+                showAlert('Hubo un error al actualizar el técnico', 'error');
+            }
         }
+
 
         function closeModal() {
             document.getElementById('editModal').style.display = 'none';
@@ -1403,9 +1553,9 @@
         }
 
         // Initialize dashboard on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             loadDashboard();
-            
+
             // Set today's date as default for date inputs
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('saleDate').value = today;
@@ -1414,4 +1564,5 @@
         });
     </script>
 </body>
+
 </html>
